@@ -1,0 +1,185 @@
+{
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app",
+    "isDirectory": true,
+    "size": 96,
+    "modifiedTime": 1623352832160,
+    "changeTime": 1623352884544,
+    "contentHash": "b28b7af69320201d1cf206ebf28373980add1451",
+    "state": "u",
+    "isArtifactRoot": true,
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main",
+    "isDirectory": true,
+    "size": 96,
+    "modifiedTime": 1623352832160,
+    "changeTime": 1623352832160,
+    "contentHash": "7505d64a54e061b7acd54ccd58b49dc43500b635",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default",
+    "isDirectory": true,
+    "size": 448,
+    "modifiedTime": 1623352832226,
+    "changeTime": 1623352832226,
+    "contentHash": "134fb9100108b9aaba9aee713cf235d514fd8f88",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/applications": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/applications",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832160,
+    "changeTime": 1623352832160,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/aura": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/aura",
+    "isDirectory": true,
+    "size": 96,
+    "modifiedTime": 1623352832227,
+    "changeTime": 1623352832227,
+    "contentHash": "71c20a341bfe32aa5cd5b4384e94f942bab6a7d3",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes",
+    "isDirectory": true,
+    "size": 128,
+    "modifiedTime": 1623434329155,
+    "changeTime": 1623434329155,
+    "contentHash": "01990bb22c087caf3a7b2b75b7e7152af9e82df4",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes/SendEmailFlowAction.cls": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes/SendEmailFlowAction.cls",
+    "size": 3170,
+    "modifiedTime": 1623434588602,
+    "changeTime": 1623434588602,
+    "contentHash": "61d405f996fac9e363f24d9606c2ab09ecaa9e4e",
+    "state": "u",
+    "package": "force-app",
+    "metadataType": "ApexClass",
+    "deferContentHash": true
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes/SendEmailFlowAction.cls-meta.xml": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/classes/SendEmailFlowAction.cls-meta.xml",
+    "size": 174,
+    "modifiedTime": 1623434329157,
+    "changeTime": 1623434329157,
+    "contentHash": "5671b8c6e013781e99ef9cffb2a889ec64ac0d22",
+    "isMetadataFile": true,
+    "state": "u",
+    "package": "force-app",
+    "metadataType": "ApexClass"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/contentassets": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/contentassets",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/flexipages": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/flexipages",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/layouts": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/layouts",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/lwc": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/lwc",
+    "isDirectory": true,
+    "size": 128,
+    "modifiedTime": 1623352843868,
+    "changeTime": 1623352843868,
+    "contentHash": "a973ac1b5be0e216b2a2db1b82ae5ba97f4086f4",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/objects": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/objects",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/permissionsets": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/permissionsets",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/staticresources": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/staticresources",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832161,
+    "changeTime": 1623352832161,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/tabs": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/tabs",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832162,
+    "changeTime": 1623352832162,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/triggers": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action/force-app/main/default/triggers",
+    "isDirectory": true,
+    "size": 64,
+    "modifiedTime": 1623352832162,
+    "changeTime": 1623352832162,
+    "contentHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "state": "u",
+    "package": "force-app"
+  },
+  "/Users/nhelterbrand/Documents/projects/send-email-flow-action": {
+    "sourcePath": "/Users/nhelterbrand/Documents/projects/send-email-flow-action",
+    "isDirectory": true,
+    "size": 384,
+    "modifiedTime": 1623358103912,
+    "changeTime": 1623358103912,
+    "contentHash": "5e845458926ac1882976dc356ac30aa29913f94a",
+    "state": "u",
+    "isWorkspace": true
+  }
+}
