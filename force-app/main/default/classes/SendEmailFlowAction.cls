@@ -48,16 +48,21 @@ global with sharing class SendEmailFlowAction {
             Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage> {emailMessage};
             Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
 
-            SendEmailResult ser;
+            SendEmailResult sendEmailResult;
             for (Messaging.SendEmailResult result : results) {
-                ser = new SendEmailResult();
-                ser.isSuccess = result.isSuccess();
-                ser.errorMessage = result.getErrors();
-                sendEmailResults.add(ser);
-            }
+                sendEmailResult = new SendEmailResult();
+                sendEmailResult.isSuccess = result.isSuccess();
 
-            return sendEmailResults;
+                sendEmailResult.errorMessages = 'Errors when sending email: ';
+                for (Messaging.SendEmailError err : result.getErrors()) {
+                    sendEmailResult.errorMessages += 'Obj ID: ' + err.getTargetObjectId() + ', Fields: ' + err.getFields() + ', Message: ' + err.getMessage() + ' -- ';
+                }
+
+                sendEmailResults.add(sendEmailResult);
+            }
         }
+
+        return sendEmailResults;
     }
 
     global class SendEmailRequest {
@@ -79,22 +84,22 @@ global with sharing class SendEmailFlowAction {
         @InvocableVariable(label='Save as Activity?')
         global Boolean saveAsActivity = false;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=true label='Email Template ID')
         global Id emailTemplateId;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=true label='What ID')
         global Id emailWhatId;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=true label='To Email Addresses')
         global String[] toAddresses;
 
-        @InvocableVariable
+        @InvocableVariable(label='Content Version Record ID List')
         global List<ContentVersion> contentVersions;
 
-        @InvocableVariable
+        @InvocableVariable(label='Document Record ID List')
         global List<Document> documents;
 
-        @InvocableVariable
+        @InvocableVariable(label='Attachment Record ID List')
         global List<Attachment> attachments;
     }
 
@@ -103,6 +108,6 @@ global with sharing class SendEmailFlowAction {
         global Boolean isSuccess;
 
         @InvocableVariable
-        global String errorMessage;
+        global String errorMessages;
     }
 }
