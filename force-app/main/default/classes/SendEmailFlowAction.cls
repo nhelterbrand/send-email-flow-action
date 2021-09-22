@@ -1,106 +1,146 @@
+/**
+ * @description       : global class to be used in a flow to send emails with the same options as Apex's send email function
+ * @author            : Nate Helterbrand
+ * @group             : West Monroe
+ * @last modified on  : 09-21-2021
+ * @last modified by  : Nate Helterbrand
+**/
 global with sharing class SendEmailFlowAction {
 
+    /**
+    * @description processes a list of email requests and sends those emails
+    * @author Nate Helterbrand | 09-21-2021
+    * @param requests
+    * @return List<SendEmailResult> the results of the email sending
+    **/
     @InvocableMethod(label='Send Email Flow Action' description='Sends Email with options for attachments and templates')
-    global static List<SendEmailResult> sendEmail(List<SendEmailRequest> sendEmailRequests) {
-        List<SendEmailResult> sendEmailResults = new List<SendEmailResult>();
+    global static List<SendEmailResult> sendEmails(List<SendEmailRequest> requests) {
+        List<SendEmailResult> results = new List<SendEmailResult>();
 
-        for (SendEmailRequest ser : sendEmailRequests) {
-            Messaging.SingleEmailMessage emailMessage = new Messaging.SingleEmailMessage();
-
-            emailMessage.setTargetObjectId(ser.targetObjectId);
-            emailMessage.setSenderDisplayName(ser.senderDisplayName);
-            emailMessage.setReplyTo(ser.replyTo);
-            emailMessage.setUseSignature(ser.useSignature);
-
-            if (ser.bccSender != null) {
-                emailMessage.setBccSender(ser.bccSender);
-            }
-
-            emailMessage.setSaveAsActivity(ser.saveAsActivity);
-            emailMessage.setTemplateID(ser.emailTemplateId);
-            emailMessage.setWhatId(ser.emailWhatId);
-            emailMessage.toAddresses = ser.toAddresses;
-
-            List<Id> idList = new List<Id>();
-
-            if (ser.contentVersions != null) {
-                for (ContentVersion recs : ser.contentVersions) {
-                    idList.add(String.valueOf(recs.Id));
-                }
-            }
-
-            if (ser.documents != null) {
-                for (Document docs : ser.documents) {
-                    idList.add(String.valueOf(docs.Id));
-                }
-            }
-
-            if (ser.attachments != null) {
-                for (Attachment atts : ser.attachments) {
-                    idList.add(String.valueOf(atts.Id));
-                }
-            }
-
-            if (!idList.isEmpty()) {
-                emailMessage.setEntityAttachments(idList);
-            }
-
-            Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage> {emailMessage};
-            Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
-
-            SendEmailResult sendEmailResult;
-            for (Messaging.SendEmailResult result : results) {
-                sendEmailResult = new SendEmailResult();
-                sendEmailResult.isSuccess = result.isSuccess();
-
-                sendEmailResult.errorMessages = 'Errors when sending email: ';
-                for (Messaging.SendEmailError err : result.getErrors()) {
-                    sendEmailResult.errorMessages += 'Obj ID: ' + err.getTargetObjectId() + ', Fields: ' + err.getFields() + ', Message: ' + err.getMessage() + ' -- ';
-                }
-
-                sendEmailResults.add(sendEmailResult);
-            }
+        for (SendEmailRequest ser : requests) {
+            results.add(sendEmail(ser));
         }
 
-        return sendEmailResults;
+        return results;
+    }
+
+    // this method actually sends the individual emails and logs the results back to the user
+    private static SendEmailResult sendEmail(SendEmailRequest req) {
+        SendEmailResult res = new SendEmailResult();
+
+        Messaging.SingleEmailMessage emailMessage = new Messaging.SingleEmailMessage();
+
+        // there needs to be a template, html, or plain body
+        if (req.htmlBody == null && req.plainTextBody == null && req.templateId == null) {
+            throw new SendEmailFlowActionException('Specify a value for Template ID, HTML Body, or Plain Text Body.');
+        }
+
+        emailMessage.setTargetObjectId(req.targetObjectId);
+        emailMessage.setSenderDisplayName(req.senderDisplayName);
+        emailMessage.setReplyTo(req.replyTo);
+        emailMessage.setUseSignature(req.useSignature);
+        emailMessage.setCharset(req.characterSet);
+        emailMessage.setBccAddresses(req.bccAddresses);
+        emailMessage.setBccSender(req.bccSender);
+        emailMessage.setSaveAsActivity(req.saveAsActivity);
+        emailMessage.setTemplateID(req.templateId);
+        emailMessage.setWhatId(req.whatId);
+        emailMessage.setToAddresses(req.toAddresses);
+        emailMessage.setEntityAttachments(req.entityAttachmentIds);
+        emailMessage.setCcAddresses(req.ccAddresses);
+        emailMessage.setHtmlBody(req.htmlBody);
+        emailMessage.setInReplyTo(req.inReplyToId);
+        emailMessage.setOptOutPolicy(req.emailOptOutPolicy);
+        emailMessage.setPlainTextBody(req.plainTextBody);
+        emailMessage.setOrgWideEmailAddressId(req.orgWideEmailAddressId);
+        emailMessage.setReferences(req.references);
+        emailMessage.setSubject(req.subject);
+        emailMessage.setTreatBodiesAsTemplate(req.treatBodiesAsTemplate);
+        emailMessage.setTreatTargetObjectAsRecipient(req.treatTargetObjectAsRecipient);
+
+        Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage> {emailMessage};
+        Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
+
+        for (Messaging.SendEmailResult result : results) {
+            res = new SendEmailResult();
+            res.isSuccess = result.isSuccess();
+
+            res.errorMessages = new List<String>();
+            for (Messaging.SendEmailError err : result.getErrors()) {
+                res.errorMessages.add(err.getStatusCode()+  '-> Object ID: ' + err.getTargetObjectId() + ', Fields: ' + err.getFields() + ', ErrorMessage: ' + err.getMessage());
+            }
+
+        }
+
+        return res;
     }
 
     global class SendEmailRequest {
-        @InvocableVariable(required=true label='Target Object Record ID' description='Represents the Record ID that the Email will be attached to')
+        @InvocableVariable(label='BCC Addresses' required=false description='A list of blind carbon copy (BCC) addresses or object IDs of the contacts, leads, and users you’re sending the email to.')
+        global List<String> bccAddresses;
+
+        @InvocableVariable(label='CC Addresses' required=false description='A list of carbon copy (CC) addresses or object IDs of the contacts, leads, and users you’re sending the email to.')
+        global List<String> ccAddresses;
+
+        @InvocableVariable(label='Character Set' required=false description='The character set for the email. If this value is null, the users default value is used.')
+        global String characterSet;
+
+        @InvocableVariable(label='Entity (Document, ContentVersion, Attachment) Attachment IDs' required=false description='Array of IDs of Document, ContentVersion, or Attachment items to attach to the email.')
+        global List<Id> entityAttachmentIds;
+
+        @InvocableVariable(label='HTML Body' required=false description='The HTML version of the email, specified by the sender. The value is encoded according to the specification associated with the organization. Specify a value for setTemplateId, setHtmlBody, or setPlainTextBody.')
+        global String htmlBody;
+
+        @InvocableVariable(label='In Reply To EmailMessage Id' required=false description='Sets the optional In-Reply-To field of the outgoing email. This field identifies the email or emails to which this email is a reply (parent emails).')
+        global Id inReplyToId;
+
+        @InvocableVariable(label='Email Opt Out Policy' required=false description='If you added recipients by ID instead of email address and the Email Opt Out option is set, this method determines the behavior of the sendEmail() call. If you add recipients by their email addresses, the opt-out settings for those recipients aren’t checked and those recipients always receive the email.')
+        global String emailOptOutPolicy;
+
+        @InvocableVariable(label='Plain Text Body' required=false description='The text version of the email, specified by the sender. Specify a value for setTemplateId, setHtmlBody, or setPlainTextBody. Or, you can define both setHtmlBody and setPlainTextBody.')
+        global String plainTextBody;
+
+        @InvocableVariable(label='Organization-wide Email Address ID' required=false description='The ID of the organization-wide email address associated with the outgoing email. The objects DisplayName field cannot be set if the setSenderDisplayName field is already set.')
+        global Id orgWideEmailAddressId;
+
+        @InvocableVariable(label='References' required=true description='The References field of the outgoing email. Identifies an email thread. Contains the parent emails References and message IDs, and possibly the In-Reply-To fields.')
+        global Id references;
+
+        @InvocableVariable(label='Subject' required=false description='The email subject line. If you are using an email template, the subject line of the template overrides this value.')
+        global String subject;
+
+        @InvocableVariable(label='Target Object ID' required=false description='Required if using a template, optional otherwise. The ID of the contact, lead, or user to which the email will be sent. The ID you specify sets the context and ensures that merge fields in the template contain the correct data.')
         global Id targetObjectId;
 
-        @InvocableVariable(required=true label='Sender Display Name')
-        global String senderDisplayName;
+        @InvocableVariable(label='Email Template ID' required=false description='Required if using a template, optional otherwise. The ID of the template used to create the email.')
+        global Id templateId;
 
-        @InvocableVariable(required=true label='Reply To Email Address')
+        @InvocableVariable(label='To Addresses' required=false description='A list of email addresses or object IDs of the contacts, leads, and users you’re sending the email to.')
+        global List<String> toAddresses;
+
+        @InvocableVariable(label='Treat Bodies as Template?' required=false)
+        global Boolean treatBodiesAsTemplate;
+
+        @InvocableVariable(label='Treat Target Object As Recipient?' required=false)
+        global Boolean treatTargetObjectAsRecipient;
+
+        @InvocableVariable(label='What ID' required=false description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data.')
+        global Id whatId;
+
+        @InvocableVariable(label='BCC Sender Recieves Copy?' required=false description='Indicates whether the email sender receives a copy of the email that is sent.')
+        global Boolean bccSender;
+
+        @InvocableVariable(label='Reply To Address' required=false description='The email address that receives the message when a recipient replies.')
         global String replyTo;
 
-        @InvocableVariable(label='Use Signature?')
-        global Boolean useSignature = false;
+        @InvocableVariable(label='Save As Activity?' required=false description='The default value is true, meaning the email is saved as an activity. This argument only applies if the recipient list is based on targetObjectId or targetObjectIds. If HTML email tracking is enabled for the organization, you will be able to track open rates.')
+        global Boolean saveAsActivity;
 
-        @InvocableVariable(label='BCC Email Address')
-        global Boolean bccSender = false;
+        @InvocableVariable(label='Sender Display Name' required=false description='The name that appears on the From line of the email. This cannot be set if the object associated with a setOrgWideEmailAddressId for a SingleEmailMessage has defined its DisplayName field.')
+        global String senderDisplayName;
 
-        @InvocableVariable(label='Save as Activity?')
-        global Boolean saveAsActivity = false;
-
-        @InvocableVariable(required=true label='Email Template ID')
-        global Id emailTemplateId;
-
-        @InvocableVariable(required=true label='What ID')
-        global Id emailWhatId;
-
-        @InvocableVariable(required=true label='To Email Addresses')
-        global String[] toAddresses;
-
-        @InvocableVariable(label='Content Version Record ID List')
-        global List<ContentVersion> contentVersions;
-
-        @InvocableVariable(label='Document Record ID List')
-        global List<Document> documents;
-
-        @InvocableVariable(label='Attachment Record ID List')
-        global List<Attachment> attachments;
+        @InvocableVariable(label='Use Signature?' required=false description='Indicates whether the email includes an email signature if the user has one configured. The default is true, meaning if the user has a signature it is included in the email unless you specify false.')
+        global Boolean useSignature;
     }
 
     global class SendEmailResult {
@@ -108,6 +148,8 @@ global with sharing class SendEmailFlowAction {
         global Boolean isSuccess;
 
         @InvocableVariable
-        global String errorMessages;
+        global List<String> errorMessages;
     }
+
+    global class SendEmailFlowActionException extends Exception {}
 }
