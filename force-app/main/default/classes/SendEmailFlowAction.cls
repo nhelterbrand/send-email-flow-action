@@ -1,7 +1,6 @@
 /**
  * @description       : global class to be used in a flow to send emails with the same options as Apex's send email function
  * @author            : Nate Helterbrand
- * @group             : West Monroe
  * @last modified on  : 09-21-2021
  * @last modified by  : Nate Helterbrand
 **/
@@ -35,10 +34,11 @@ global with sharing class SendEmailFlowAction {
             throw new SendEmailFlowActionException('Specify a value for Template ID, HTML Body, or Plain Text Body.');
         }
 
+        // setting all the email settings from the flow
         emailMessage.setTargetObjectId(req.targetObjectId);
         emailMessage.setSenderDisplayName(req.senderDisplayName);
         emailMessage.setReplyTo(req.replyTo);
-        emailMessage.setUseSignature(req.useSignature);
+
         emailMessage.setCharset(req.characterSet);
         emailMessage.setBccAddresses(req.bccAddresses);
         emailMessage.setBccSender(req.bccSender);
@@ -103,7 +103,7 @@ global with sharing class SendEmailFlowAction {
         @InvocableVariable(label='Organization-wide Email Address ID' required=false description='The ID of the organization-wide email address associated with the outgoing email. The objects DisplayName field cannot be set if the setSenderDisplayName field is already set.')
         global Id orgWideEmailAddressId;
 
-        @InvocableVariable(label='References' required=true description='The References field of the outgoing email. Identifies an email thread. Contains the parent emails References and message IDs, and possibly the In-Reply-To fields.')
+        @InvocableVariable(label='References' required=false description='The References field of the outgoing email. Identifies an email thread. Contains the parent emails References and message IDs, and possibly the In-Reply-To fields.')
         global Id references;
 
         @InvocableVariable(label='Subject' required=false description='The email subject line. If you are using an email template, the subject line of the template overrides this value.')
@@ -119,28 +119,28 @@ global with sharing class SendEmailFlowAction {
         global List<String> toAddresses;
 
         @InvocableVariable(label='Treat Bodies as Template?' required=false)
-        global Boolean treatBodiesAsTemplate;
+        global Boolean treatBodiesAsTemplate = false;
 
         @InvocableVariable(label='Treat Target Object As Recipient?' required=false)
-        global Boolean treatTargetObjectAsRecipient;
+        global Boolean treatTargetObjectAsRecipient = true;
 
         @InvocableVariable(label='What ID' required=false description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data.')
         global Id whatId;
 
         @InvocableVariable(label='BCC Sender Recieves Copy?' required=false description='Indicates whether the email sender receives a copy of the email that is sent.')
-        global Boolean bccSender;
+        global Boolean bccSender = false;
 
         @InvocableVariable(label='Reply To Address' required=false description='The email address that receives the message when a recipient replies.')
         global String replyTo;
 
         @InvocableVariable(label='Save As Activity?' required=false description='The default value is true, meaning the email is saved as an activity. This argument only applies if the recipient list is based on targetObjectId or targetObjectIds. If HTML email tracking is enabled for the organization, you will be able to track open rates.')
-        global Boolean saveAsActivity;
+        global Boolean saveAsActivity = true;
 
         @InvocableVariable(label='Sender Display Name' required=false description='The name that appears on the From line of the email. This cannot be set if the object associated with a setOrgWideEmailAddressId for a SingleEmailMessage has defined its DisplayName field.')
         global String senderDisplayName;
 
         @InvocableVariable(label='Use Signature?' required=false description='Indicates whether the email includes an email signature if the user has one configured. The default is true, meaning if the user has a signature it is included in the email unless you specify false.')
-        global Boolean useSignature;
+        global Boolean useSignature = true;
     }
 
     global class SendEmailResult {
