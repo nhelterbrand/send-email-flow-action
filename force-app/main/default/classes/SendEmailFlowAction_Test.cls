@@ -19,10 +19,8 @@ private class SendEmailFlowAction_Test {
         }
     }
 
-    @isTest static void testSimpleEmailException() {
-        String testEmailTo = 'test@test.com';
+    @isTest static void testSimpleEmailExceptionNoToAddress() {
         SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
-        req.toAddresses = new List<String>{testEmailTo};
 
         Test.startTest();
         try {

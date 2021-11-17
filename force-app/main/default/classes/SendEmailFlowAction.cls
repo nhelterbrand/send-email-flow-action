@@ -1,14 +1,13 @@
 /**
  * @description       : global class to be used in a flow to send emails with the same options as Apex's send email function
  * @author            : Nate Helterbrand
- * @last modified on  : 09-21-2021
  * @last modified by  : Nate Helterbrand
 **/
 global with sharing class SendEmailFlowAction {
 
     /**
     * @description processes a list of email requests and sends those emails
-    * @author Nate Helterbrand | 09-21-2021
+    * @author Nate Helterbrand
     * @param requests
     * @return List<SendEmailResult> the results of the email sending
     **/
@@ -34,42 +33,47 @@ global with sharing class SendEmailFlowAction {
             throw new SendEmailFlowActionException('Specify a value for Template ID, HTML Body, or Plain Text Body.');
         }
 
-        // setting all the email settings from the flow
-        emailMessage.setTargetObjectId(req.targetObjectId);
-        emailMessage.setSenderDisplayName(req.senderDisplayName);
-        emailMessage.setReplyTo(req.replyTo);
+        try {
 
-        emailMessage.setCharset(req.characterSet);
-        emailMessage.setBccAddresses(req.bccAddresses);
-        emailMessage.setBccSender(req.bccSender);
-        emailMessage.setSaveAsActivity(req.saveAsActivity);
-        emailMessage.setTemplateID(req.templateId);
-        emailMessage.setWhatId(req.whatId);
-        emailMessage.setToAddresses(req.toAddresses);
-        emailMessage.setEntityAttachments(req.entityAttachmentIds);
-        emailMessage.setCcAddresses(req.ccAddresses);
-        emailMessage.setHtmlBody(req.htmlBody);
-        emailMessage.setInReplyTo(req.inReplyToId);
-        emailMessage.setOptOutPolicy(req.emailOptOutPolicy);
-        emailMessage.setPlainTextBody(req.plainTextBody);
-        emailMessage.setOrgWideEmailAddressId(req.orgWideEmailAddressId);
-        emailMessage.setReferences(req.references);
-        emailMessage.setSubject(req.subject);
-        emailMessage.setTreatBodiesAsTemplate(req.treatBodiesAsTemplate);
-        emailMessage.setTreatTargetObjectAsRecipient(req.treatTargetObjectAsRecipient);
+            // setting all the email settings from the flow
+            emailMessage.setTargetObjectId(req.targetObjectId);
+            emailMessage.setSenderDisplayName(req.senderDisplayName);
+            emailMessage.setReplyTo(req.replyTo);
 
-        Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage> {emailMessage};
-        Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
+            emailMessage.setCharset(req.characterSet);
+            emailMessage.setBccAddresses(req.bccAddresses);
+            emailMessage.setBccSender(req.bccSender);
+            emailMessage.setSaveAsActivity(req.saveAsActivity);
+            emailMessage.setTemplateID(req.templateId);
+            emailMessage.setWhatId(req.whatId);
+            emailMessage.setToAddresses(req.toAddresses);
+            emailMessage.setEntityAttachments(req.entityAttachmentIds);
+            emailMessage.setCcAddresses(req.ccAddresses);
+            emailMessage.setHtmlBody(req.htmlBody);
+            emailMessage.setInReplyTo(req.inReplyToId);
+            emailMessage.setOptOutPolicy(req.emailOptOutPolicy);
+            emailMessage.setPlainTextBody(req.plainTextBody);
+            emailMessage.setOrgWideEmailAddressId(req.orgWideEmailAddressId);
+            emailMessage.setReferences(req.references);
+            emailMessage.setSubject(req.subject);
+            emailMessage.setTreatBodiesAsTemplate(req.treatBodiesAsTemplate);
+            emailMessage.setTreatTargetObjectAsRecipient(req.treatTargetObjectAsRecipient);
 
-        for (Messaging.SendEmailResult result : results) {
-            res = new SendEmailResult();
-            res.isSuccess = result.isSuccess();
+            Messaging.SingleEmailMessage[] messages = new List<Messaging.SingleEmailMessage> {emailMessage};
+            Messaging.SendEmailResult[] results = Messaging.sendEmail(messages);
 
-            res.errorMessages = new List<String>();
-            for (Messaging.SendEmailError err : result.getErrors()) {
-                res.errorMessages.add(err.getStatusCode()+  '-> Object ID: ' + err.getTargetObjectId() + ', Fields: ' + err.getFields() + ', ErrorMessage: ' + err.getMessage());
+            for (Messaging.SendEmailResult result : results) {
+                res = new SendEmailResult();
+                res.isSuccess = result.isSuccess();
+
+                res.errorMessages = new List<String>();
+                for (Messaging.SendEmailError err : result.getErrors()) {
+                    res.errorMessages.add(err.getStatusCode()+  '-> Object ID: ' + err.getTargetObjectId() + ', Fields: ' + err.getFields() + ', ErrorMessage: ' + err.getMessage());
+                }
+
             }
-
+        } catch (Exception ex) {
+            res.errorMessages.add('Error when sending email -> ' + ex.getMessage());
         }
 
         return res;
