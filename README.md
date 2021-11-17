@@ -7,10 +7,10 @@ Install the latest version of the unmanaged package: [latest release](https://lo
 
 If you don't want to install the package, feel free to deploy the components themselves by clicking the button below. Take note that this will override any existing components that have the same name.
 
-    <a href="https://githubsfdeploy.herokuapp.com?owner=nhelterbrand&repo=send-email-flow-action&ref=master">
-        <img alt="Deploy to Salesforce"
-        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
-    </a>
+<a href="https://githubsfdeploy.herokuapp.com?owner=nhelterbrand&repo=send-email-flow-action&ref=master">
+    <img alt="Deploy to Salesforce"
+    src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
 
 
 ## Usage
