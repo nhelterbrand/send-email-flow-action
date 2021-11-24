@@ -4,8 +4,8 @@
             "path": "force-app",
             "default": true,
             "package": "send-email-flow-action",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionName": "Winter 22",
+            "versionNumber": "1.0.0.NEXT"
         }
     ],
     "name": "send-email-flow-action",
@@ -13,6 +13,8 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "51.0",
     "packageAliases": {
-        "send-email-flow-action": "0Ho5G000000KyyzSAC"
+        "send-email-flow-action": "0Ho5G000000KyyzSAC",
+        "send-email-flow-action@1.0.0-1": "04t5G000004C4iRQAS",
+        "send-email-flow-action@1.0.0-2": "04t5G000004C4iWQAS"
     }
 }
