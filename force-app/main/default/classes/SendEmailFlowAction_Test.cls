@@ -31,4 +31,74 @@ private class SendEmailFlowAction_Test {
 
         Test.stopTest();
     }
+
+    @isTest static void testEmailNoValueForTemplateID() {
+        SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
+        req.templateId = ' ';
+
+        Test.startTest();
+        try {
+            List<SendEmailFlowAction.SendEmailResult> results = SendEmailFlowAction.sendEmails(new List<SendEmailFlowAction.SendEmailRequest>{req});
+        } catch (SendEmailFlowAction.SendEmailFlowActionException e) {
+            System.assertNotEquals(null, e.getMessage());
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testEmailNoValueForWhatID() {
+        SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
+        req.whatId = ' ';
+
+        Test.startTest();
+        try {
+            List<SendEmailFlowAction.SendEmailResult> results = SendEmailFlowAction.sendEmails(new List<SendEmailFlowAction.SendEmailRequest>{req});
+        } catch (SendEmailFlowAction.SendEmailFlowActionException e) {
+            System.assertNotEquals(null, e.getMessage());
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testEmailNoValueForOrgWideEmailAddressID() {
+        SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
+        req.orgWideEmailAddressId = ' ';
+
+        Test.startTest();
+        try {
+            List<SendEmailFlowAction.SendEmailResult> results = SendEmailFlowAction.sendEmails(new List<SendEmailFlowAction.SendEmailRequest>{req});
+        } catch (SendEmailFlowAction.SendEmailFlowActionException e) {
+            System.assertNotEquals(null, e.getMessage());
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testEmailNoValueForInReplyToID() {
+        SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
+        req.inReplyToId = ' ';
+
+        Test.startTest();
+        try {
+            List<SendEmailFlowAction.SendEmailResult> results = SendEmailFlowAction.sendEmails(new List<SendEmailFlowAction.SendEmailRequest>{req});
+        } catch (SendEmailFlowAction.SendEmailFlowActionException e) {
+            System.assertNotEquals(null, e.getMessage());
+        }
+
+        Test.stopTest();
+    }
+
+    @isTest static void testEmailNoValueForTargetObjectID() {
+        SendEmailFlowAction.SendEmailRequest req = new SendEmailFlowAction.SendEmailRequest();
+        req.targetObjectId = ' ';
+
+        Test.startTest();
+        try {
+            List<SendEmailFlowAction.SendEmailResult> results = SendEmailFlowAction.sendEmails(new List<SendEmailFlowAction.SendEmailRequest>{req});
+        } catch (SendEmailFlowAction.SendEmailFlowActionException e) {
+            System.assertNotEquals(null, e.getMessage());
+        }
+
+        Test.stopTest();
+    }
 }
